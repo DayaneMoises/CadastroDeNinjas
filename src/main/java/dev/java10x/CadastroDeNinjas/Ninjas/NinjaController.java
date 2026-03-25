@@ -2,36 +2,43 @@ package dev.java10x.CadastroDeNinjas.Ninjas;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("ninja")
 public class NinjaController {
 
+    private NinjaService ninjaService;
+
+    public NinjaController(NinjaService ninjaService){
+        this.ninjaService = ninjaService;
+    }
+
     @PostMapping("/create")
-    public String criarNinja(){
-        return "Ninja criado!";
+    public NinjaModel criarNinja(@RequestBody NinjaModel ninja){
+        return ninjaService.createNinja(ninja);
     }
 
      //Buscar ninja por id
-     @GetMapping("/byId")
-     public String getNinjaId(){
-         return "Ninja ID!";
+     @GetMapping("/{id}")
+     public NinjaModel getNinjaId(@PathVariable Long id){
+         return ninjaService.getNinjaId(id);
      }
 
      //Buscar todos os ninjas
      @GetMapping("/all")
-     public String getNinjas(){
-         return "Todos os ninjas";
+     public List<NinjaModel> allNinjas(){
+         return ninjaService.allNinjas();
      }
 
      //Alterar dados do ninja
-     @PutMapping("/update")
-     public String putNinja(){
-         return "Ninja atualizado";
+     @PutMapping("/update/{id}")
+     public NinjaModel updateNinja(@PathVariable Long id, @RequestBody NinjaModel ninjaUpdate){
+         return ninjaService.updateNinja(id, ninjaUpdate);
      }
 
-     @DeleteMapping("/delete")
-     public String deletetNinja(){
-         return "Ninja deletado!";
+     @DeleteMapping("/delete/{id}")
+     public void delete(@PathVariable Long id){
+        ninjaService.deleteNinja(id);
      }
-
 }
